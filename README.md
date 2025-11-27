@@ -24,9 +24,14 @@ Custom output path:
 uvx pdf-flattening document.pdf output.pdf
 ```
 
-Custom DPI (default: 300):
+Force specific DPI (default: auto-detect from source images):
 ```bash
-uvx pdf-flattening document.pdf --dpi 400
+uvx pdf-flattening document.pdf --dpi 300
+```
+
+Adjust JPEG quality (default: 85):
+```bash
+uvx pdf-flattening document.pdf --quality 90
 ```
 
 ### Batch mode (directory)
@@ -45,10 +50,13 @@ uvx pdf-flattening documents/ output/
 
 | Option | Description |
 |--------|-------------|
-| `--dpi N` | Rendering DPI (default: 300) |
-| `-q, --quiet` | Suppress progress output |
+| `-d, --dpi N` | Rendering DPI (default: auto-detect from source images) |
+| `-q, --quality N` | JPEG quality 1-100 (default: 85) |
+| `-u, --quiet` | Suppress progress output |
 | `-f, --force` | Force overwrite when input and output directories are the same |
-| `--version` | Show version |
+| `-v, --version` | Show version |
+
+By default, the tool analyzes embedded images in the source PDF and renders each page at optimal resolution to avoid unnecessary file size increase. Use `--dpi 300` to force a fixed resolution.
 
 ## Development
 

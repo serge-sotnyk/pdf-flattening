@@ -35,7 +35,8 @@ def get_batch_output_path(
 def process_single_file(
     input_path: Path,
     output_path: Path,
-    dpi: int,
+    dpi: int | None,
+    quality: int,
     show_progress: bool,
 ) -> None:
     if not input_path.exists():
@@ -46,7 +47,7 @@ def process_single_file(
         print(f"Warning: Output file exists and will be overwritten: {output_path}", file=sys.stderr)
 
     try:
-        flatten_pdf(input_path, output_path, dpi=dpi, show_progress=show_progress)
+        flatten_pdf(input_path, output_path, dpi=dpi, quality=quality, show_progress=show_progress)
         print(f"Created: {output_path}")
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)
@@ -56,7 +57,8 @@ def process_single_file(
 def process_batch(
     input_dir: Path,
     output_dir: Path | None,
-    dpi: int,
+    dpi: int | None,
+    quality: int,
     show_progress: bool,
     force: bool,
 ) -> None:
@@ -85,7 +87,7 @@ def process_batch(
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
         try:
-            flatten_pdf(pdf_file, output_path, dpi=dpi, show_progress=show_progress)
+            flatten_pdf(pdf_file, output_path, dpi=dpi, quality=quality, show_progress=show_progress)
             processed += 1
             if not show_progress:
                 print(f"Created: {output_path}")
@@ -120,11 +122,17 @@ def main() -> None:
     parser.add_argument(
         "-d", "--dpi",
         type=int,
-        default=300,
-        help="Rendering DPI (default: 300)",
+        default=None,
+        help="Rendering DPI (default: auto-detect from source images)",
     )
     parser.add_argument(
-        "-q", "--quiet",
+        "-q", "--quality",
+        type=int,
+        default=85,
+        help="JPEG quality 1-100 (default: 85)",
+    )
+    parser.add_argument(
+        "-u", "--quiet",
         action="store_true",
         help="Suppress progress output",
     )
@@ -141,6 +149,10 @@ def main() -> None:
 
     args = parser.parse_args()
 
+    if args.quality < 1 or args.quality > 100:
+        print("Error: --quality must be between 1 and 100", file=sys.stderr)
+        sys.exit(1)
+
     input_path = Path(args.input_path)
     if not input_path.exists():
         print(f"Error: Input path not found: {input_path}", file=sys.stderr)
@@ -150,10 +162,10 @@ def main() -> None:
 
     if input_path.is_dir():
         output_dir = Path(args.output_path) if args.output_path else None
-        process_batch(input_path, output_dir, args.dpi, show_progress, args.force)
+        process_batch(input_path, output_dir, args.dpi, args.quality, show_progress, args.force)
     else:
         output_path = Path(args.output_path) if args.output_path else get_default_output_path(input_path)
-        process_single_file(input_path, output_path, args.dpi, show_progress)
+        process_single_file(input_path, output_path, args.dpi, args.quality, show_progress)
 
 
 if __name__ == "__main__":
