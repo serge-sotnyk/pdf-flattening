@@ -1,7 +1,24 @@
 [project]
 name = "pdf-flattening"
-version = "0.1.0"
-description = "Add your description here"
+dynamic = ["version"]
+description = "Convert PDFs to image-only PDFs (one raster image per page)"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "pypdfium2",
+    "Pillow",
+    "tqdm",
+]
+
+[project.scripts]
+pdf-flatten = "pdf_flattening.cli:main"
+
+[tool.setuptools.dynamic]
+version = { file = "VERSION" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
