@@ -10,6 +10,9 @@ dependencies = [
     "tqdm",
 ]
 
+[project.optional-dependencies]
+dev = ["pytest"]
+
 [project.scripts]
 pdf-flatten = "pdf_flattening.cli:main"
 
