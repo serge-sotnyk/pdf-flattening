@@ -12,6 +12,8 @@ Install [uv](https://docs.astral.sh/uv/getting-started/installation/) (includes 
 
 ## Usage
 
+### Single file
+
 Basic usage (output: `document.flat.pdf`):
 ```bash
 uvx pdf-flattening document.pdf
@@ -26,6 +28,27 @@ Custom DPI (default: 300):
 ```bash
 uvx pdf-flattening document.pdf --dpi 400
 ```
+
+### Batch mode (directory)
+
+Process all PDFs in a directory recursively (output next to originals):
+```bash
+uvx pdf-flattening documents/
+```
+
+Process to a separate output directory (preserves folder structure):
+```bash
+uvx pdf-flattening documents/ output/
+```
+
+### Options
+
+| Option | Description |
+|--------|-------------|
+| `--dpi N` | Rendering DPI (default: 300) |
+| `-q, --quiet` | Suppress progress output |
+| `-f, --force` | Force overwrite when input and output directories are the same |
+| `--version` | Show version |
 
 ## Development
 
@@ -42,4 +65,4 @@ uv run pdf-flatten input.pdf --dpi 400
 
 ## License
 
-MIT
+[Apache License 2.0](LICENSE)
