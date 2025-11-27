@@ -8,42 +8,63 @@ Ensures no hidden sensitive data remains in anonymized documents. Information th
 
 ## Prerequisites
 
-Install [uv](https://docs.astral.sh/uv/getting-started/installation/) (includes `uvx`).
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/).
+
+## Installation
+
+**Option 1: Run directly from GitHub (no installation):**
+```bash
+uvx --from git+https://github.com/serge-sotnyk/pdf-flattening pdf-flatten document.pdf
+```
+
+**Option 2: Install as a tool (recommended for frequent use):**
+```bash
+uv tool install git+https://github.com/serge-sotnyk/pdf-flattening
+pdf-flatten document.pdf
+```
+
+**Update to latest version:**
+```bash
+uv tool upgrade pdf-flattening
+```
 
 ## Usage
+
+> **Note:** For one-time use without installation, prefix commands with:
+> `uvx --from git+https://github.com/serge-sotnyk/pdf-flattening`
 
 ### Single file
 
 Basic usage (output: `document.flat.pdf`):
 ```bash
-uvx pdf-flattening document.pdf
+pdf-flatten document.pdf
 ```
 
 Custom output path:
 ```bash
-uvx pdf-flattening document.pdf output.pdf
+pdf-flatten document.pdf output.pdf
 ```
 
 Force specific DPI (default: auto-detect from source images):
 ```bash
-uvx pdf-flattening document.pdf --dpi 300
+pdf-flatten document.pdf --dpi 300
 ```
 
 Adjust JPEG quality (default: 85):
 ```bash
-uvx pdf-flattening document.pdf --quality 90
+pdf-flatten document.pdf -q 90
 ```
 
 ### Batch mode (directory)
 
 Process all PDFs in a directory recursively (output next to originals):
 ```bash
-uvx pdf-flattening documents/
+pdf-flatten documents/
 ```
 
 Process to a separate output directory (preserves folder structure):
 ```bash
-uvx pdf-flattening documents/ output/
+pdf-flatten documents/ output/
 ```
 
 ### Options
